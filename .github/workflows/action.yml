@@ -6,34 +6,34 @@ on:
       - main
       - master
   schedule:
-    - [cite_start]cron: '0 12 * * 0'
-  [cite_start]workflow_dispatch:
+    - cron: "0 12 * * 0"
+  workflow_dispatch: 
 
 jobs:
   build-windows:
-    [cite_start]runs-on: windows-latest
+    runs-on: windows-latest 
 
     steps:
     - name: Pobranie kodu z repozytorium
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4 
 
     - name: Konfiguracja Pythona
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v5 
       with:
         python-version: '3.10'
 
     - name: Instalacja komponentów ze skryptu installResources
-      [cite_start]shell: powershell [cite: 42]
+      shell: powershell
       run: |
         ./installResources.ps1
 
     - name: Budowanie pliku EXE za pomoca PyInstaller
-      [cite_start]shell: powershell [cite: 42]
+      shell: powershell
       run: |
         python -m PyInstaller --onefile project.py
 
-    - [cite_start]name: Przeslanie gotowego pliku EXE na GitHub [cite: 34, 35]
-      uses: actions/upload-artifact@v4
+    - name: Przeslanie gotowego pliku EXE na GitHub
+      uses: actions/upload-artifact@v4 
       with:
         name: Gotowy_Program_Konwerter
         path: dist/project.exe
