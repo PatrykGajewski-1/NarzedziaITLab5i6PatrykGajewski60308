@@ -1,0 +1,1 @@
+pip install pyinstaller pyyaml PyQt6
