@@ -1,0 +1,39 @@
+name: Automatyczne Budowanie Projektu
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  schedule:
+    - cron: '0 12 * * 0' 
+  workflow_dispatch: 
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Pobranie kodu z repozytorium
+      uses: actions/checkout@v3
+
+    - name: Konfiguracja Pythona
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Instalacja komponentów ze skryptu installResources
+      shell: powershell
+      run: |
+        ./installResources.ps1
+
+    - name: Budowanie pliku EXE za pomoca PyInstaller
+      shell: powershell
+      run: |
+        python -m PyInstaller --onefile project.py
+
+    - name: Przeslanie gotowego pliku EXE na GitHub
+      uses: actions/upload-artifact@v3
+      with:
+        name: Gotowy_Program_Konwerter
+        path: dist/project.py.exe
